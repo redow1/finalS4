@@ -6,7 +6,16 @@ import java.util.UUID;
 
 public class TaskManager {
 
-    LCManager lcManager = new LCManager();
+    LCManager lcManager = new LCManager(this);
+
+    public LCManager getLcManager() {
+        return lcManager;
+    }
+
+    public HashMap<String, AbstractTask> getTaskMap() {
+        return taskMap;
+    }
+
     HashMap<String, AbstractTask> taskMap = new HashMap<>();
 
     HashMap<TaskType, ArrayList<AbstractTask>> typesToTasks = new HashMap<>();
@@ -27,11 +36,12 @@ public class TaskManager {
             return ("");
         }
         task.setUuid(uUIDGen());
+        uuid = task.getUuid();
         list.add(task);
-        typesToTasks.put(taskType, list);
-        taskMap.put(task.getUuid(), task);
 
-        (taskMap.get(uuid)).setTaskStatus(TaskStatus.NEW);
+        typesToTasks.put(taskType, list);
+        task.setTaskStatus(TaskStatus.NEW);
+        taskMap.put(task.getUuid(),task);
         if (lcManager.validateTypeIsEpic(uuid)) {
             lcManager.epicLC(uuid);
         }
@@ -108,21 +118,29 @@ public class TaskManager {
         AbstractTask oldTask = getTaskByUuid(uuid);
         if (newTaskType.equals(TaskType.Task)) {
             task = new Task(oldTask.getName(), oldTask.getDescription(), TaskType.Task);
+            taskMap.put(task.getUuid(),task);
+            task.setUuid(uuid);
         } else if (newTaskType.equals(TaskType.SubTask)) {
             task = new SubTask(oldTask.getName(), oldTask.getDescription(), TaskType.SubTask);
-
+            task.setUuid(uuid);
+            taskMap.put(task.getUuid(),task);
             linkSubTaskAndEpic(epicuuid, (SubTask) task);
             lcManager.epicLC(epicuuid);
 
         } else if (newTaskType.equals(TaskType.Epic)) {
             task = new Epic(oldTask.getName(), oldTask.getDescription(), TaskType.SubTask);
+            task.setUuid(uuid);
+            taskMap.put(task.getUuid(),task);
             list.add(task);
             typesToTasks.put(taskType, list);
             lcManager.epicLC(uuid);
+
         } else {
             System.out.println("Такой тип задачи не поддерживается");
             return;
         }
+
+
         task.setUuid(oldTask.getUuid());
         taskMap.put(task.getUuid(), task);
     }
