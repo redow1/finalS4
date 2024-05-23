@@ -1,7 +1,7 @@
 package entity;
 
-public class SubTask extends AbstractTask {
-    String parrentUuid;
+public class SubTask extends Task {
+    String EpicUuid;
 
     public SubTask(String name, String description, TaskType taskType) {
         super(name, description, taskType);
@@ -10,18 +10,18 @@ public class SubTask extends AbstractTask {
     public SubTask() {
     }
 
-    public String getParrentUuid() {
-        return parrentUuid;
+    public String getEpicUuidUuid() {
+        return EpicUuid;
     }
 
-    public void setParrentUuid(String parrentUuid) {
-        this.parrentUuid = parrentUuid;
+    public void setEpicUuidUuid(String EpicUuid) {
+        this.EpicUuid = EpicUuid;
     }
 
     @Override
     public String toString() {
         return "SubTask{" +
-                "parrentUuid='" + parrentUuid + '\'' +
+                "parrentUuid='" + EpicUuid + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", taskType=" + taskType +

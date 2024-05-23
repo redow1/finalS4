@@ -1,6 +1,5 @@
 import entity.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class LCManager {
@@ -12,31 +11,23 @@ public class LCManager {
     }
 
     public TaskStatus checkTasksStatus(String uuid) {
-        return taskManager.getTaskByUuid(uuid).getTaskStatus();
+        return taskManager.actionCreateGet().getTaskByUuid(uuid).getTaskStatus();
     }
 
-    public TaskStatus changeTaskStatus(String uuid, TaskStatus newTaskStatus) {
-        AbstractTask task = taskManager.getTaskByUuid(uuid);
+    public void changeTaskStatus(String uuid, TaskStatus newTaskStatus) {
+        Task task = taskManager.actionCreateGet().getTaskByUuid(uuid);
         if (!newTaskStatus.equals(checkTasksStatus(uuid))) {
             task.setTaskStatus(newTaskStatus);
-        } else {
-            return checkTasksStatus(uuid);
+            if (task.getTaskType().equals(TaskType.SubTask)) {
+                SubTask task1 = (SubTask) taskManager.actionCreateGet().getTaskByUuid(uuid);
+                epicLC(task1.getEpicUuidUuid());
+            }
         }
-        if (task.getTaskType().equals(TaskType.SubTask)) {
-            SubTask task1 = (SubTask) task;
-            epicLC(task1.getParrentUuid());
-        }
-        epicLC(uuid);
-        return checkTasksStatus(uuid);
     }
 
     public boolean validateTypeIsEpic(String uuid) {
-        AbstractTask task = taskManager.getTaskByUuid(uuid);
-        if (!task.getTaskType().equals(TaskType.Epic)) {
-            return false;
-        } else {
-            return true;
-        }
+        Task task = taskManager.actionCreateGet().getTaskByUuid(uuid);
+        return task.getTaskType().equals(TaskType.Epic);
     }
 
     public TaskStatus epicLC(String uuid) {
@@ -44,28 +35,42 @@ public class LCManager {
             return checkTasksStatus(uuid);
 
         } else {
-            Epic task = (Epic) taskManager.getTaskByUuid(uuid);
+            Epic task = (Epic) taskManager.actionCreateGet().getTaskByUuid(uuid);
             boolean statusUnderEpic = false;
+            boolean previousStatusUnderEpic = true;
+
             int counterForCompletedSubTasks = 0;
-            if (task != null && task.getSubTasks().isEmpty()) {
-                changeTaskStatus(uuid, TaskStatus.NEW);
-                return checkTasksStatus(uuid);
-            } else if (task != null) {
-                for (SubTask subTask : task.getSubTasks()) {
-                    if (subTask.getTaskStatus().equals(TaskStatus.DONE)) {
-                        statusUnderEpic = true;
-                        counterForCompletedSubTasks = counterForCompletedSubTasks + 1;
+            int counterForLinkedSubTasks = 0;
+            if (task != null) {
+                HashMap<String, SubTask> subtasks = taskManager.actionCreateGet().getTaskByType(TaskType.SubTask);
+                for (String string : subtasks.keySet()) {
+                    if (uuid.equals(subtasks.get(string).getEpicUuidUuid())) {
+                        counterForLinkedSubTasks = counterForLinkedSubTasks + 1;
+                        if (subtasks.get(string).getTaskStatus().equals(TaskStatus.DONE)) {
+                            statusUnderEpic = previousStatusUnderEpic;
+                            counterForCompletedSubTasks = counterForCompletedSubTasks + 1;
+
+                        } else {
+                            statusUnderEpic = false;
+                            previousStatusUnderEpic = false;
+
+                        }
                     }
+
                 }
-                counterForCompletedSubTasks = 0;
+                if (counterForLinkedSubTasks == 0) {
+                    changeTaskStatus(uuid, TaskStatus.NEW);
+                    return checkTasksStatus(uuid);
+                }
                 if (statusUnderEpic) {
                     changeTaskStatus(uuid, TaskStatus.DONE);
                     return checkTasksStatus(uuid);
                 } else {
                     changeTaskStatus(uuid, TaskStatus.IN_PROGRESS);
-                    System.out.println("Под эпиком " + task.getName() + " " + counterForCompletedSubTasks + " завершенные задачи " + (task.getSubTasks().size() - counterForCompletedSubTasks) + " незавершенных задач");
+                    System.out.println("Под эпиком " + task.getName() + " " + counterForCompletedSubTasks + " завершенные задачи " + (counterForLinkedSubTasks - counterForCompletedSubTasks) + " незавершенных задач");
                     return checkTasksStatus(uuid);
                 }
+
 
             }
             return checkTasksStatus(uuid);

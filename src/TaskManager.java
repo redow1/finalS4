@@ -2,148 +2,80 @@ import entity.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
+import java.util.concurrent.TransferQueue;
 
 public class TaskManager {
 
+    ActionCreateGet actionCreateGet = new ActionCreateGet(this);
+    public ActionCreateGet actionCreateGet() {
+        return actionCreateGet;
+    }
+    ActionDelete actionDelete = new ActionDelete(this);
+    public ActionDelete actionDelete() {
+        return actionDelete;
+    }
     LCManager lcManager = new LCManager(this);
-
-    public LCManager getLcManager() {
+    public LCManager lcManager() {
         return lcManager;
     }
 
-    public HashMap<String, AbstractTask> getTaskMap() {
-        return taskMap;
-    }
-
-    HashMap<String, AbstractTask> taskMap = new HashMap<>();
-
-    HashMap<TaskType, ArrayList<AbstractTask>> typesToTasks = new HashMap<>();
-
-    public String createTask(String name, String description, TaskType taskType, String uuid) {
-        AbstractTask task;
-        ArrayList<AbstractTask> list;
-        list = typesToTasks.getOrDefault(taskType, new ArrayList<>());
-        if (taskType.equals(TaskType.Task)) {
-            task = new Task(name, description, taskType);
-        } else if (taskType.equals(TaskType.SubTask)) {
-            task = new SubTask(name, description, taskType);
-            linkSubTaskAndEpic(uuid, (SubTask) task);
-        } else if (taskType.equals(TaskType.Epic)) {
-            task = new Epic(name, description, taskType);
-        } else {
-            System.out.println("Такой тип задачи не поддерживается");
-            return ("");
-        }
-        task.setUuid(uUIDGen());
-        uuid = task.getUuid();
-        list.add(task);
-
-        typesToTasks.put(taskType, list);
-        task.setTaskStatus(TaskStatus.NEW);
-        taskMap.put(task.getUuid(),task);
-        if (lcManager.validateTypeIsEpic(uuid)) {
-            lcManager.epicLC(uuid);
-        }
 
 
-        return task.getUuid();
-    }
 
     public void printAllTasks() {
-        System.out.println(taskMap);
+        System.out.println(actionCreateGet.getAllTasks());
     }
-
-    public void deleteAllTasks() {
-        taskMap.clear();
-        typesToTasks.clear();
-        System.out.println("все задачи удалены");
+    public void printTaskWithType(TaskType taskType) {
+        System.out.println(actionCreateGet.getTaskByType(taskType));
     }
-
-    public void deleteTask(String uuid) {
-        AbstractTask task = getTaskByUuid(uuid);
-        typesToTasks.get(typesToTasks.get(task.getTaskType())).remove(uuid);
-        taskMap.remove(task);
-        if (lcManager.validateTypeIsEpic(uuid)) {
+    public void transformator(String uuid, TaskType newTaskType, String epicUuid) {
+        HashMap<String, Task> tasks = actionCreateGet.getAllTasks();
+        Task task = null;
+        TaskType taskType = tasks.get(uuid).getTaskType();
+        Task oldTask = actionCreateGet.getTaskByUuid(uuid);
+        if (newTaskType.equals(TaskType.Task)) {
+            task = new Task(oldTask.getName(), oldTask.getDescription(), TaskType.Task);
+            tasks.put(uuid, task);
+            task.setUuid(uuid);
+        } else if (newTaskType.equals(TaskType.SubTask)) {
+            task = new SubTask(oldTask.getName(), oldTask.getDescription(), TaskType.SubTask);
+            task.setUuid(uuid);
+            ((SubTask)task).setEpicUuidUuid(epicUuid);
+            tasks.put(uuid, task);
+            lcManager.epicLC(epicUuid);
+        } else if (newTaskType.equals(TaskType.Epic)) {
+            task = new Epic(oldTask.getName(), oldTask.getDescription(), TaskType.Epic);
+            task.setUuid(uuid);
+            task.setTaskStatus(TaskStatus.NEW);
+            tasks.put(task.getUuid(), task);
             lcManager.epicLC(uuid);
+
+
+        } else {
+            System.out.println("Такой тип задачи не поддерживается");
+            return;
         }
-        System.out.println("все задачи удалены");
-
     }
-
-    public AbstractTask getTaskByUuid(String uuid) {
-        return taskMap.get(uuid);
-    }
-
-    public ArrayList getListofTasksbyType(TaskType taskType) {
-        return typesToTasks.get(taskType);
-    }
-
-    public void updateTaskParameters(String name, String description, String uuid, String newparentUuid) {
-        TaskType initialTaskType = taskMap.get(uuid).getTaskType();
+    public void updateTaskParameters(String name, String description, String uuid, String NewEpicUuid) {
+        HashMap<String, Task> tasks = actionCreateGet.getAllTasks();
+        TaskType initialTaskType = tasks.get(uuid).getTaskType();
 
         if (!name.isEmpty()) {
-            taskMap.get(uuid).setName(name);
+            tasks.get(uuid).setName(name);
         }
         if (!description.isEmpty()) {
-            taskMap.get(uuid).setDescription(description);
+            tasks.get(uuid).setDescription(description);
         }
-        if (!newparentUuid.isEmpty() && ((getTaskByUuid(uuid).getTaskType().equals(TaskType.SubTask)) || initialTaskType.equals(TaskType.SubTask))) {
-            linkSubTaskAndEpic(newparentUuid, (SubTask) getTaskByUuid(uuid));
+        if (!NewEpicUuid.isEmpty() && ((actionCreateGet.getTaskByUuid(uuid).getTaskType().equals(TaskType.SubTask)) || initialTaskType.equals(TaskType.SubTask))) {
+            SubTask task = (SubTask) tasks.get(uuid);
+            task.setEpicUuidUuid(NewEpicUuid);
+            tasks.put(task.getUuid(), task);
+            lcManager.epicLC(NewEpicUuid);
         } else {
             System.out.println("Тип задачи не SubTask или new parent id is empty");
         }
 
 
     }
-
-    private void linkSubTaskAndEpic(String parrentUuid, SubTask subTask) {
-        subTask.setParrentUuid(parrentUuid);
-        ((Epic) taskMap.get(parrentUuid)).getSubTasks().add(subTask);
-        lcManager.epicLC(parrentUuid);
-
-    }
-
-    public String uUIDGen() {
-        return UUID.randomUUID().toString();
-    }
-
-    public void transformator(String uuid, TaskType newTaskType, String epicuuid) {
-        AbstractTask task = null;
-        ArrayList<AbstractTask> list;
-        TaskType taskType = taskMap.get(uuid).getTaskType();
-        list = typesToTasks.getOrDefault(taskType, new ArrayList<>());
-        typesToTasks.get(taskType).remove(uuid);
-
-        AbstractTask oldTask = getTaskByUuid(uuid);
-        if (newTaskType.equals(TaskType.Task)) {
-            task = new Task(oldTask.getName(), oldTask.getDescription(), TaskType.Task);
-            taskMap.put(task.getUuid(),task);
-            task.setUuid(uuid);
-        } else if (newTaskType.equals(TaskType.SubTask)) {
-            task = new SubTask(oldTask.getName(), oldTask.getDescription(), TaskType.SubTask);
-            task.setUuid(uuid);
-            taskMap.put(task.getUuid(),task);
-            linkSubTaskAndEpic(epicuuid, (SubTask) task);
-            lcManager.epicLC(epicuuid);
-
-        } else if (newTaskType.equals(TaskType.Epic)) {
-            task = new Epic(oldTask.getName(), oldTask.getDescription(), TaskType.SubTask);
-            task.setUuid(uuid);
-            taskMap.put(task.getUuid(),task);
-            list.add(task);
-            typesToTasks.put(taskType, list);
-            lcManager.epicLC(uuid);
-
-        } else {
-            System.out.println("Такой тип задачи не поддерживается");
-            return;
-        }
-
-
-        task.setUuid(oldTask.getUuid());
-        taskMap.put(task.getUuid(), task);
-    }
-
 
 }
