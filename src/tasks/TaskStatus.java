@@ -1,4 +1,4 @@
-package entity;
+package tasks;
 
 public enum TaskStatus {
     NEW,
