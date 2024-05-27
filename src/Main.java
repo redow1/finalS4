@@ -88,7 +88,7 @@ public class Main {
         System.out.println(taskManager.getSubTask(uuidtestSubTask1));
         //Epic
         taskManager.updateEpicParameters("сходить на работу", null, uuidtestEpic1);
-
+        System.out.println(taskManager.getEpic(uuidtestEpic1));
         //negative
         taskManager.updateEpicParameters(null, null, uuidtestEpic1);
         System.out.println(taskManager.getEpic(uuidtestEpic1));
