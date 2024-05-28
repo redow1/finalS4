@@ -1,20 +1,20 @@
 import managers.TaskManager;
-import tasks.TaskStatus;
-import tasks.TaskType;
+import tasks.*;
 
 public class Main {
     public static void main(String[] args) {
 
         TaskManager taskManager = new TaskManager();
+        /*
         //Test data
         System.out.println("TD creation:");
-        String uuidtestEpic1 = taskManager.createEpic("сходить в магазин1", "сходить в магазин завтра", TaskType.Epic);
-        String uuidtestEpic2 = taskManager.createEpic("сходить в магазин", "сходить в магазин сегодня", TaskType.Epic);
-        String uuidtestSubTask2 = taskManager.createSubTask("сходить в магазин1", "купить попить", TaskType.SubTask, uuidtestEpic1);
-        String uuidtestSubTask3 = taskManager.createSubTask("сходить в магазин2", "купить попить", TaskType.SubTask, uuidtestEpic1);
-        String uuidtestSubTask1 = taskManager.createSubTask("сходить в магазин3", "купить поесть", TaskType.SubTask, uuidtestEpic2);
-        String uuidtestTask1 = taskManager.createTask("поспать1", "часов 8", TaskType.Task);
-        String uuidtestTask2 = taskManager.createTask("поспать2", "часов 8", TaskType.Task);
+        String uuidtestEpic1 = taskManager.createEpic(new Epic("сходить в магазин1", "сходить в магазин завтра", TaskType.Epic));
+        String uuidtestEpic2 = taskManager.createEpic(new Epic("сходить в магазин", "сходить в магазин сегодня", TaskType.Epic));
+        String uuidtestSubTask2 = taskManager.createSubTask(new SubTask("сходить в магазин1", "купить попить", TaskType.SubTask, uuidtestEpic1));
+        String uuidtestSubTask3 = taskManager.createSubTask(new SubTask("сходить в магазин2", "купить попить", TaskType.SubTask, uuidtestEpic1));
+        String uuidtestSubTask1 = taskManager.createSubTask(new SubTask("сходить в магазин3", "купить поесть", TaskType.SubTask, uuidtestEpic2));
+        String uuidtestTask1 = taskManager.createTask(new Task("поспать1", "часов 8", TaskType.Task));
+        String uuidtestTask2 = taskManager.createTask(new Task("поспать2", "часов 8", TaskType.Task));
 
         // TC for get
         System.out.println("");
@@ -76,10 +76,10 @@ public class Main {
 
         System.out.println("after update");
         //Task
-        taskManager.updateTaskParameters("погулять", "полчасика", uuidtestTask1);
+        taskManager.updateTaskParameters(new Task("погулять", "полчасика", uuidtestTask1));
         System.out.println(taskManager.getTask(uuidtestTask1));
         //Subtask
-        taskManager.updateSubTaskParameters("заказать проудктов", "к родителям", uuidtestSubTask1, uuidtestEpic1);
+        taskManager.updateSubTaskParameters(new SubTask("заказать проудктов", "к родителям", uuidtestSubTask1, uuidtestEpic1));
         System.out.println(taskManager.checkEpicStatus(uuidtestEpic1));
         System.out.println("статус эпика 1(ER: In Progress)");
         System.out.println(taskManager.checkEpicStatus(uuidtestEpic2));
@@ -87,11 +87,22 @@ public class Main {
 
         System.out.println(taskManager.getSubTask(uuidtestSubTask1));
         //Epic
-        taskManager.updateEpicParameters("сходить на работу", null, uuidtestEpic1);
+        taskManager.updateEpicParameters(new Epic("сходить на работу", null, uuidtestEpic1));
         System.out.println(taskManager.getEpic(uuidtestEpic1));
         //negative
-        taskManager.updateEpicParameters(null, null, uuidtestEpic1);
+        taskManager.updateEpicParameters(new Epic(null, null, uuidtestEpic1));
         System.out.println(taskManager.getEpic(uuidtestEpic1));
 
+
+        //taskManager.deleteSubTasks();
+        //System.out.println(taskManager.checkEpicStatus(uuidtestEpic2));
+        //System.out.println(taskManager.checkEpicStatus(uuidtestEpic1));
+
+        taskManager.deleteEpic(uuidtestEpic1);
+        System.out.println(taskManager.getSubTasks());
+        */
+
     }
+
+
 }

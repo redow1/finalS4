@@ -2,8 +2,7 @@ package managers;
 
 import tasks.*;
 
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class TaskManager {
 
@@ -18,62 +17,51 @@ public class TaskManager {
         return UUID.randomUUID().toString();
     }
 
+
+
     // Create (для теста сделал ретерн uuid)
 
-    public String createTask(String name, String description, TaskType taskType) {
-        String uuid;
-        Task task;
-        task = new Task(name, description, taskType);
+    public void createTask(Task task) {
         task.setUuid(UUIDGen());
-        uuid = task.getUuid();
         task.setTaskStatus(TaskStatus.NEW);
         taskMap.put(task.getUuid(), task);
-        return (uuid);
+        // return (task.getUuid());
     }
 
-    public String createSubTask(String name, String description, TaskType taskType, String epicUuid) {
-        String uuid;
-        SubTask task;
-        task = new SubTask(name, description, taskType);
-        task.setUuid(UUIDGen());
-        uuid = task.getUuid();
-        task.setTaskStatus(TaskStatus.NEW);
-        task.setEpicUuidUuid(epicUuid);
-        subTaskMap.put(task.getUuid(), task);
-        updateEpicStatus(epicUuid);
-        return (uuid);
+    public void createSubTask(SubTask subTask) {
+        subTask.setUuid(UUIDGen());
+        subTask.setTaskStatus(TaskStatus.NEW);
+        subTaskMap.put(subTask.getUuid(), subTask);
+        updateEpicStatus(subTask.getEpicUuidUuid());
+        // return (subTask.getUuid());
     }
 
-    public String createEpic(String name, String description, TaskType taskType) {
-        String uuid;
-        Epic task;
-        task = new Epic(name, description, taskType);
-        task.setUuid(UUIDGen());
-        uuid = task.getUuid();
-        task.setTaskStatus(TaskStatus.NEW);
-        epicMap.put(task.getUuid(), task);
-        updateEpicStatus(uuid);
-        return (uuid);
+    public void createEpic(Epic epic) {
+        epic.setUuid(UUIDGen());
+        epic.setTaskStatus(TaskStatus.NEW);
+        epicMap.put(epic.getUuid(), epic);
+        updateEpicStatus(epic.getUuid());
+        //return (epic.getUuid());
     }
 
     // Get
-    public HashMap<String, Task> getTasks() {
-        return taskMap;
+    public ArrayList<Task> getTasks() {
+        return new ArrayList<Task>(taskMap.values());
     }
 
-    public HashMap<String, SubTask> getSubTasks() {
-        return subTaskMap;
+    public ArrayList<SubTask> getSubTasks() {
+        return new ArrayList<SubTask>(subTaskMap.values());
     }
 
-    public HashMap<String, Epic> getEpics() {
-        return epicMap;
+    public ArrayList<Epic> getEpics() {
+        return new ArrayList<Epic>(epicMap.values());
     }
 
-    public HashMap<String, SubTask> getEpicSubtasks(String EpicUuid) {
-        HashMap<String, SubTask> forPrint = new HashMap<>();
+    public ArrayList<SubTask> getEpicSubtasks(String EpicUuid) {
+        ArrayList<SubTask> forPrint = new ArrayList<>();
         for (String string : subTaskMap.keySet()) {
             if (EpicUuid.equals(subTaskMap.get(string).getEpicUuidUuid())) {
-                forPrint.put(string, subTaskMap.get(string));
+                forPrint.add(subTaskMap.get(string));
             }
         }
         return forPrint;
@@ -93,72 +81,78 @@ public class TaskManager {
 
     // Update
 
-    public void updateTaskParameters(String name, String description, String uuid) {
-        HashMap<String, Task> tasks = getTasks();
-        if (name != null) {
-            tasks.get(uuid).setName(name);
+    public void updateTaskParameters(Task task) {
+        if (task != null && task.getName() != null) {
+            taskMap.get(task.getUuid()).setName(task.getName());
         }
-        if (!description.isEmpty()) {
-            tasks.get(uuid).setDescription(description);
+        if (task != null && task.getDescription() != null) {
+            taskMap.get(task.getUuid()).setDescription(task.getDescription());
         }
     }
 
-    public void updateSubTaskParameters(String name, String description, String uuid, String NewEpicUuid) {
-        HashMap<String, SubTask> tasks = getSubTasks();
-        if (name != null) {
-            tasks.get(uuid).setName(name);
+    public void updateSubTaskParameters(SubTask subTask) {
+        if (subTask != null &&  subTask.getName() != null) {
+            subTaskMap.get(subTask.getUuid()).setName(subTask.getName());
         }
-        if (NewEpicUuid != null) {
-            tasks.get(uuid).setDescription(description);
+        if (subTask != null && subTask.getDescription() != null) {
+            subTaskMap.get(subTask.getUuid()).setDescription(subTask.getDescription());
         }
-        if (NewEpicUuid != null) {
-            SubTask task = tasks.get(uuid);
+        if (subTask != null && subTask.getEpicUuidUuid() != null) {
+            SubTask task = subTaskMap.get(subTask.getUuid());
             String oldEpicUuid = task.getEpicUuidUuid();
-            task.setEpicUuidUuid(NewEpicUuid);
-            tasks.put(task.getUuid(), task);
+            task.setEpicUuidUuid(subTask.getEpicUuidUuid());
+            subTaskMap.put(task.getUuid(), task);
             updateEpicStatus(oldEpicUuid);
-            updateEpicStatus(NewEpicUuid);
+            updateEpicStatus(subTask.getEpicUuidUuid());
         }
     }
 
-    public void updateEpicParameters(String name, String description, String uuid) {
-        HashMap<String, Epic> tasks = getEpics();
-        if (name != null) {
-            tasks.get(uuid).setName(name);
+    public void updateEpicParameters(Epic epic) {
+        if (epic != null && epic.getName() != null) {
+            epicMap.get(epic.getUuid()).setName(epic.getName());
         }
-        if (description != null) {
-            tasks.get(uuid).setDescription(description);
+        if (epic != null && epic.getDescription() != null) {
+            epicMap.get(epic.getUuid()).setDescription(epic.getDescription());
         }
     }
 
     // Delete
     public void deleteTasks() {
         taskMap.clear();
-        System.out.println("все Tasks удалены");
     }
 
     public void deleteSubTasks() {
         subTaskMap.clear();
-        System.out.println("все SubTasks удалены");
+        for (Epic epic : epicMap.values()) {
+            updateEpicStatus(epic.getUuid());
+        }
+
+
     }
 
     public void deleteEpics() {
         epicMap.clear();
-        System.out.println("все Epics удалены");
+        subTaskMap.clear();
     }
 
     public void deleteTask(String uuid) {
-        System.out.println("задача " + uuid + " " + taskMap.get(uuid).getName() + "  удалена");
         taskMap.remove(uuid);
     }
 
     public void deleteSubTask(String uuid) {
-        System.out.println("задача " + uuid + " " + subTaskMap.get(uuid).getName() + "  удалена");
+        String oldEpicUUid = subTaskMap.get(uuid).getEpicUuidUuid();
         subTaskMap.remove(uuid);
+        updateEpicStatus(oldEpicUUid);
     }
 
     public void deleteEpic(String uuid) {
-        System.out.println("задача " + uuid + " " + epicMap.get(uuid).getName() + "  удалена");
+        Iterator<String> it = subTaskMap.keySet().iterator();
+        while (it.hasNext())
+        {
+            String key = it.next();
+            if (subTaskMap.get(key).getEpicUuidUuid().equals(uuid))
+                it.remove();
+        }
         epicMap.remove(uuid);
     }
 
@@ -192,10 +186,10 @@ public class TaskManager {
         boolean statusUnderEpic = false;
         boolean previousStatusUnderEpic = true;
         if (epic != null) {
-            HashMap<String, SubTask> subtasks = getEpicSubtasks(uuid);
-            for (String string : subtasks.keySet()) {
+            List<SubTask> subTasks = getEpicSubtasks(uuid);
+            for (SubTask subTask : subTasks) {
                 counterForLinkedSubTasks = counterForLinkedSubTasks + 1;
-                if (subtasks.get(string).getTaskStatus().equals(TaskStatus.DONE)) {
+                if (subTask.getTaskStatus().equals(TaskStatus.DONE)) {
                     statusUnderEpic = previousStatusUnderEpic;
                     counterForCompletedSubTasks = counterForCompletedSubTasks + 1;
                 } else {
