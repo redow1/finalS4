@@ -10,6 +10,7 @@ import tasks.Task;
 import tasks.TaskType;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -27,7 +28,7 @@ class InMemoryHistoryManagerTest {
         taskManager.getTask(taskUuid);
         taskManager.getEpic(epicUuid);
         taskManager.getSubTask(subTask1Uuid);
-        final ArrayList<Task> checkList1 = historyManager.getHistory();
+        final LinkedList<Task> checkList1 = historyManager.getHistory();
         assertEquals(5, checkList1.size(), "Неверное количество задач в истории");
         taskManager.getTask(taskUuid);
         taskManager.getTask(taskUuid);
@@ -35,6 +36,12 @@ class InMemoryHistoryManagerTest {
         taskManager.getTask(taskUuid);
         taskManager.getTask(taskUuid);
         taskManager.getTask(taskUuid);
-        assertEquals(10, checkList1.size(), "Неверное количество задач в истории");
+        taskManager.getTask(taskUuid);
+        taskManager.getTask(taskUuid);
+        taskManager.getTask(taskUuid);
+        taskManager.getTask(taskUuid);
+
+        final LinkedList<Task> checkList2 = historyManager.getHistory();
+        assertEquals(10, checkList2.size(), "Неверное количество задач в истории");
     }
 }

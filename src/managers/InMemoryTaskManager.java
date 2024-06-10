@@ -11,9 +11,9 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager;
     }
 
-    HashMap<String, Task> taskMap = new HashMap<>();
-    HashMap<String, SubTask> subTaskMap = new HashMap<>();
-    HashMap<String, Epic> epicMap = new HashMap<>();
+    Map<String, Task> taskMap = new HashMap<>();
+    Map<String, SubTask> subTaskMap = new HashMap<>();
+    Map<String, Epic> epicMap = new HashMap<>();
 
 
 
