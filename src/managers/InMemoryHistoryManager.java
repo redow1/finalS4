@@ -16,12 +16,12 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
     @Override
     public LinkedList<Task> getHistory() {
-        int size = historyList.size()-1;
+        int size = historyList.size();
         LinkedList<Task> returnList = new LinkedList<>();
-        if (size <= 9) {
+        if (size <= sizeForPrint) {
             return historyList;
         } else {
-            for (int i = size; i > historyList.size() - sizeForPrint - 1; i--) {
+            for (int i = size - 1; i > historyList.size() - sizeForPrint - 1; i--) {
                 returnList.add(historyList.get(i));
             }
             return returnList;
