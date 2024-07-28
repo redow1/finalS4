@@ -41,6 +41,7 @@ class InMemoryHistoryManagerTest {
         taskManager.getTask(taskUuid);
         taskManager.getTask(taskUuid);
 
+
         final LinkedList<Task> checkList2 = historyManager.getHistory();
         assertEquals(10, checkList2.size(), "Неверное количество задач в истории");
     }
