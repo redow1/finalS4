@@ -47,7 +47,7 @@ class InMemoryHistoryManagerTest {
         // assertEquals(6, checkList1.size(), "Неверное количество задач в истории");
         taskManager.getTask(taskUuid);
         taskManager.getTask(taskUuid);
-        taskManager.getTask(taskUuid);
+
         final ArrayList<Task> checkList1 = historyManager.getHistory();
         assertEquals(6, checkList1.size(), "Неверное количество задач в истории");
         //taskManager.deleteTasks(); // ER 2
