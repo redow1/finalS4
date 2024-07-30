@@ -60,10 +60,10 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<SubTask> getEpicSubtasks(String EpicUuid) {
+    public ArrayList<SubTask> getEpicSubtasks(String epicUuid) {
         ArrayList<SubTask> forPrint = new ArrayList<>();
         for (String string : subTaskMap.keySet()) {
-            if (EpicUuid.equals(subTaskMap.get(string).getEpicUuidUuid())) {
+            if (epicUuid.equals(subTaskMap.get(string).getEpicUuidUuid())) {
                 forPrint.add(subTaskMap.get(string));
             }
         }
