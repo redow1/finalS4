@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
     TaskManager taskManager = Managers.getDefault();
+
     @Test
     void createTask() {
         Task task = new Task("поспать1", "часов 8", TaskType.Task);

@@ -9,7 +9,7 @@ import tasks.SubTask;
 import tasks.Task;
 import tasks.TaskType;
 import java.util.List;
-import java.util.ArrayList;
+
 
 
 
@@ -49,7 +49,6 @@ class InMemoryHistoryManagerTest {
         taskManager.getTask(taskUuid);
         taskManager.deleteEpic(epicUuid);
         final List<Task> checkList2 = historyManager.getHistory();
-        final ArrayList<Task> checkList2 = historyManager.getHistory();
         assertEquals(4, checkList2.size(), "Неверное количество задач в истории");
     }
 
