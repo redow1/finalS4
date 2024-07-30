@@ -19,7 +19,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public String createTask(Task task) {
-        task.setUuid(UUIDGen());
+        task.setUuid(uuidgen());
         task.setTaskStatus(TaskStatus.NEW);
         taskMap.put(task.getUuid(), task);
         return task.getUuid();
@@ -27,7 +27,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public String createSubTask(SubTask subTask) {
-        subTask.setUuid(UUIDGen());
+        subTask.setUuid(uuidgen());
         subTask.setTaskStatus(TaskStatus.NEW);
         subTaskMap.put(subTask.getUuid(), subTask);
         updateEpicStatus(subTask.getEpicUuidUuid());
@@ -36,7 +36,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public String createEpic(Epic epic) {
-        epic.setUuid(UUIDGen());
+        epic.setUuid(uuidgen());
         epic.setTaskStatus(TaskStatus.NEW);
         epicMap.put(epic.getUuid(), epic);
         updateEpicStatus(epic.getUuid());
