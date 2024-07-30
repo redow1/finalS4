@@ -5,7 +5,7 @@ public class Main {
     public static void main(String[] args) {
 
         TaskManager taskManager = Managers.getDefault();
-        
+
         //Test data
         /*
         System.out.println("TD creation:");
@@ -127,8 +127,8 @@ public class Main {
         System.out.println(InMemoryTaskManager.getSubTasks());
 
          */
-        
-        
+
+
 
     }
 
