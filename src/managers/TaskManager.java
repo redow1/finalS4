@@ -6,7 +6,6 @@ import tasks.Task;
 import tasks.TaskStatus;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public interface TaskManager {
@@ -21,11 +20,11 @@ public interface TaskManager {
 
     String createEpic(Epic epic);
 
-    List<Task> getTasks();
+    ArrayList<Task> getTasks();
 
-    List<SubTask> getSubTasks();
+    ArrayList<SubTask> getSubTasks();
 
-    List<Epic> getEpics();
+    ArrayList<Epic> getEpics();
 
     ArrayList<SubTask> getEpicSubtasks(String EpicUuid);
 
@@ -40,6 +39,7 @@ public interface TaskManager {
     void updateSubTaskParameters(SubTask subTask);
 
     void updateEpicParameters(Epic epic);
+
 
     void deleteTasks();
 
