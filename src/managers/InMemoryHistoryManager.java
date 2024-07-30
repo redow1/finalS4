@@ -52,6 +52,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public List<Task> getHistory() {
         List<Task> tasks = new ArrayList<>();
+
         tasks.addAll(nodeMap.keySet());
         return tasks;
 

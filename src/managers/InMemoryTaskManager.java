@@ -228,7 +228,7 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     @Override
-    public void updateEpicStatus(String uuid) {
+    public void updateEpicStatus(String uuid)  {
         Epic epic = getEpic(uuid);
         int counterForCompletedSubTasks = 0;
         int counterForLinkedSubTasks = 0;
