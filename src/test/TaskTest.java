@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TaskTest {
     TaskManager taskManager = Managers.getDefault();
+
     @Test
     void createNewTask() {
         Task task = new Task("поспать1", "часов 8", TaskType.Task);
