@@ -2,17 +2,14 @@ package managers;
 
 import tasks.Task;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
     Node tail = null;
     Node head = null;
 
-    public Map<Task, Node> nodeMap = new HashMap<>();
+    public HashMap<Task, Node> nodeMap = new HashMap<>();
 
     @Override
     public void add(Task task) {
@@ -50,9 +47,8 @@ public class InMemoryHistoryManager implements HistoryManager {
 
 
     @Override
-    public List<Task> getHistory() {
-        List<Task> tasks = new ArrayList<>();
-
+    public ArrayList<Task> getHistory() {
+        ArrayList<Task> tasks = new ArrayList<>();
         tasks.addAll(nodeMap.keySet());
         return tasks;
 

@@ -2,11 +2,7 @@ package managers;
 
 import tasks.*;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Iterator;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
     HistoryManager historyManager = Managers.getDefaultHistory();
@@ -49,17 +45,17 @@ public class InMemoryTaskManager implements TaskManager {
 
     // Get
     @Override
-    public List<Task> getTasks() {
+    public ArrayList<Task> getTasks() {
         return new ArrayList<Task>(taskMap.values());
     }
 
     @Override
-    public List<SubTask> getSubTasks() {
+    public ArrayList<SubTask> getSubTasks() {
         return new ArrayList<SubTask>(subTaskMap.values());
     }
 
     @Override
-    public List<Epic> getEpics() {
+    public ArrayList<Epic> getEpics() {
         return new ArrayList<Epic>(epicMap.values());
     }
 

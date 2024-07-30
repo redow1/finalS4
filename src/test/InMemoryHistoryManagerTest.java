@@ -11,8 +11,6 @@ import tasks.TaskType;
 import java.util.List;
 
 
-
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class InMemoryHistoryManagerTest {
