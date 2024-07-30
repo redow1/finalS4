@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public interface TaskManager {
+
     public HistoryManager getHistoryManager();
-    default String UUIDGen() {
+
+    default String uuidgen() {
         return UUID.randomUUID().toString();
     }
 
@@ -26,7 +28,7 @@ public interface TaskManager {
 
     ArrayList<Epic> getEpics();
 
-    ArrayList<SubTask> getEpicSubtasks(String EpicUuid);
+    ArrayList<SubTask> getEpicSubtasks(String epicUuid);
 
     Task getTask(String uuid);
 
@@ -39,7 +41,6 @@ public interface TaskManager {
     void updateSubTaskParameters(SubTask subTask);
 
     void updateEpicParameters(Epic epic);
-
 
     void deleteTasks();
 
