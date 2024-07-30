@@ -12,6 +12,7 @@ public  class Task {
         this.description = description;
         this.taskType = taskType;
     }
+
     public Task(String name, String description, String uuid) {
         this.name = name;
         this.description = description;
