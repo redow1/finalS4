@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SubTaskTest {
     TaskManager taskManager = Managers.getDefault();
+
     @Test
     void subTaskEpicIDCannotBeUpdatedToSubTaskID() {
         Epic epic = new Epic("сходить в магазин1", "сходить в магазин завтра", TaskType.Epic);

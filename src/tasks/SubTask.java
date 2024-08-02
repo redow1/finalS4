@@ -7,6 +7,7 @@ public class SubTask extends Task {
         super(name, description, taskType);
         this.epicUuid = epicUuid;
     }
+
     public SubTask(String name, String description, String uuid, String epicUuid) {
         super(name, description, uuid);
         this.epicUuid = epicUuid;
@@ -19,8 +20,8 @@ public class SubTask extends Task {
         return epicUuid;
     }
 
-    public void setEpicUuidUuid(String EpicUuid) {
-        this.epicUuid = EpicUuid;
+    public void setEpicUuidUuid(String epicUuid) {
+        this.epicUuid = epicUuid;
     }
 
     @Override
