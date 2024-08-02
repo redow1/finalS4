@@ -6,6 +6,7 @@ import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
     HistoryManager historyManager = Managers.getDefaultHistory();
+    FileBackedTaskManager fileBackedTaskManager = Managers.getDefaultFileBackedManager();
 
     @Override
     public HistoryManager getHistoryManager() {
