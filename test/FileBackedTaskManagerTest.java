@@ -25,6 +25,9 @@ public class FileBackedTaskManagerTest {
 
     @AfterAll
     public static void clearTestFile() throws IOException {
+        if (testFile == null) {
+            throw new IllegalArgumentException("File path cannot be null");
+        }
         if (testFile.exists()) {
             testFile.delete();
             testFile.createNewFile();
