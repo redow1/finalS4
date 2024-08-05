@@ -2,7 +2,6 @@ package managers;
 
 import tasks.*;
 
-import java.io.File;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
@@ -51,7 +50,6 @@ public class InMemoryTaskManager implements TaskManager {
         return epic.getUuid();
     }
 
-    // Get
     @Override
     public ArrayList<Task> getTasks() {
         return new ArrayList<Task>(taskMap.values());

@@ -1,7 +1,5 @@
 package tasks.formatters;
 
-
-import tasks.SubTask;
 import tasks.Task;
 import tasks.TaskType;
 
@@ -11,7 +9,7 @@ public class CSVFormatter {
     }
 
     public static String toString(Task task) {
-        if (task.getTaskType().equals(TaskType.SubTask)){
+        if (task.getTaskType().equals(TaskType.SubTask)) {
             StringBuilder append1 = new StringBuilder()
                     .append(task.getUuid()).append(",")
                     .append(task.getTaskType()).append(",")
