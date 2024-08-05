@@ -2,11 +2,11 @@ package managers;
 
 import tasks.*;
 
+import java.io.File;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
     HistoryManager historyManager = Managers.getDefaultHistory();
-    FileBackedTaskManager fileBackedTaskManager = Managers.getDefaultFileBackedManager();
 
     @Override
     public HistoryManager getHistoryManager() {
@@ -16,7 +16,14 @@ public class InMemoryTaskManager implements TaskManager {
     Map<String, Task> taskMap = new HashMap<>();
     Map<String, SubTask> subTaskMap = new HashMap<>();
     Map<String, Epic> epicMap = new HashMap<>();
+    Map<String, Task> mergedMap = new HashMap<>();
 
+    public Map groupMapsForSave(Map taskMap, Map subTaskMap, Map epicMap) {
+        mergedMap.putAll(taskMap);
+        mergedMap.putAll(subTaskMap);
+        mergedMap.putAll(epicMap);
+        return mergedMap;
+    }
 
     @Override
     public String createTask(Task task) {
@@ -92,27 +99,29 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     @Override
-    public void updateTaskParameters(Task task) {
-        if (task != null && task.getName() != null) {
-            taskMap.get(task.getUuid()).setName(task.getName());
+    public void updateTaskParameters(String uuid, String newName, String newDescription) {
+        Task task = taskMap.get(uuid);
+        if (task != null && newName != null) {
+            taskMap.get(task.getUuid()).setName(newName);
         }
-        if (task != null && task.getDescription() != null) {
-            taskMap.get(task.getUuid()).setDescription(task.getDescription());
+        if (task != null && newDescription != null) {
+            taskMap.get(task.getUuid()).setDescription(newDescription);
         }
     }
 
     @Override
-    public void updateSubTaskParameters(SubTask subTask) {
-        if (subTask != null && subTask.getName() != null) {
-            subTaskMap.get(subTask.getUuid()).setName(subTask.getName());
+    public void updateSubTaskParameters(String uuid, String newName, String newDescription, String newEpicUuid) {
+        SubTask subTask = subTaskMap.get(uuid);
+        if (subTask != null && newName != null) {
+            subTaskMap.get(subTask.getUuid()).setName(newName);
         }
-        if (subTask != null && subTask.getDescription() != null) {
-            subTaskMap.get(subTask.getUuid()).setDescription(subTask.getDescription());
+        if (subTask != null && newDescription != null) {
+            subTaskMap.get(subTask.getUuid()).setDescription(newDescription);
         }
-        if (subTask != null && subTask.getEpicUuidUuid() != null && !subTask.getUuid().equals(subTask.getEpicUuidUuid())) {
+        if (subTask != null && subTask.getEpicUuidUuid() != null && !subTask.getUuid().equals(newEpicUuid)) {
             SubTask task = subTaskMap.get(subTask.getUuid());
             String oldEpicUuid = task.getEpicUuidUuid();
-            task.setEpicUuidUuid(subTask.getEpicUuidUuid());
+            task.setEpicUuidUuid(newEpicUuid);
             subTaskMap.put(task.getUuid(), task);
             updateEpicStatus(oldEpicUuid);
             updateEpicStatus(subTask.getEpicUuidUuid());
@@ -120,7 +129,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateEpicParameters(Epic epic) {
+    public void updateEpicParameters(String uuid, String newName, String newDescription) {
+        Epic epic = epicMap.get(uuid);
         if (epic != null && epic.getName() != null) {
             epicMap.get(epic.getUuid()).setName(epic.getName());
         }
@@ -257,6 +267,5 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
     }
-
 
 }
