@@ -12,10 +12,11 @@ import java.util.Map;
 
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
-    public FileBackedTaskManager (Path path) {
+    public FileBackedTaskManager(Path path) {
         path = this.path;
     }
-    public FileBackedTaskManager () {
+
+    public FileBackedTaskManager() {
     }
 
     Path path;
@@ -28,6 +29,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         saveNewTask(task);
         return uuid;
     }
+
     @Override
     public String createSubTask(SubTask subTask) {
         String uuid = super.createSubTask(subTask);
