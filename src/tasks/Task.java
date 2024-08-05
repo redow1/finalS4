@@ -57,6 +57,7 @@ public  class Task {
     public TaskStatus getTaskStatus() {
         return taskStatus;
     }
+
     public String getEpicUuidUuid() {
         return null;
     }
