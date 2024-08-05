@@ -13,4 +13,5 @@ class ManagersTest {
         Assertions.assertNotNull(Managers.getDefault(), "Таск менеджер не иницилизрован");
         assertNotNull(Managers.getDefaultHistory(), "Хистори менеджер не иницилизрован");
     }
+
 }
