@@ -13,7 +13,8 @@ import java.util.Map;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     public FileBackedTaskManager(Path path) {
-        path = this.path;
+        this.path = path;
+        this.file = path.toFile();
     }
 
     public FileBackedTaskManager() {
@@ -180,6 +181,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private static boolean fileExists(File file) {
+        if (file == null) {
+            throw new IllegalArgumentException("File path cannot be null");
+        }
         return (file.exists() && file.isFile());
     }
 }

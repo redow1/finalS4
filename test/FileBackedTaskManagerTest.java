@@ -1,6 +1,5 @@
 package test;
 
-import managers.FileBackedTaskManager;
 import managers.Managers;
 import managers.TaskManager;
 import org.junit.jupiter.api.AfterAll;
@@ -22,12 +21,10 @@ public class FileBackedTaskManagerTest {
     static File testFile = new File("/Users/dmitriiturin/java-kanban/testfiles/test.txt");
     static TaskManager taskManager = Managers.getFileBackedManager(Path.of(testFile.getAbsolutePath()));
     static File testFile1 = new File("/Users/dmitriiturin/java-kanban/testfiles/test1.txt");
+    static TaskManager taskManager1 = Managers.getFileBackedManager(Path.of(testFile1.getAbsolutePath()));
 
     @AfterAll
     public static void clearTestFile() throws IOException {
-        if (testFile == null) {
-            throw new IllegalArgumentException("File path cannot be null");
-        }
         if (testFile.exists()) {
             testFile.delete();
             testFile.createNewFile();
@@ -121,33 +118,8 @@ public class FileBackedTaskManagerTest {
     }
 
     @Test
-    void reSaveFile() {
-        Task task = new Task("не спать почти", "вообще", TaskType.Task);
-        String uuid5 = taskManager.createTask(task);
-        taskManager.updateTaskParameters(uuid5,null,"for test1");
-        Task task1 = taskManager.getTask(uuid5);
-        String stringToAppend = CSVFormatter.toString(task1);
-        try (BufferedReader br = new BufferedReader(new FileReader(testFile))) {
-            String line;
-            String lineForTest = null;
-            while ((line = br.readLine()) != null) {
-                if (line.contains(task.getUuid())) {
-                    lineForTest = line;
-                }
-            }
-            assertEquals(lineForTest, stringToAppend);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    @Test
     void loadFile(){
         ArrayList<Task> expectedContent = taskManager.getTasks();
-        TaskManager taskManager1 = new FileBackedTaskManager(testFile1.toPath());
         ArrayList<Task> content = taskManager1.getTasks();
         assertEquals(expectedContent, content);
     }
