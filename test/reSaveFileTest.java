@@ -1,11 +1,10 @@
-package test;
+package tasks;
 
+import exeptions.ManagerSaveException;
 import managers.Managers;
 import managers.TaskManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
-import tasks.Task;
-import tasks.TaskType;
 import tasks.formatters.CSVFormatter;
 
 import java.io.*;
@@ -42,7 +41,7 @@ public class reSaveFileTest {
                 }
             }
             assertEquals(lineForTest, stringToAppend);
-        } catch (FileNotFoundException e) {
+        } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);

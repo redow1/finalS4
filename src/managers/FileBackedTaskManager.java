@@ -20,9 +20,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public FileBackedTaskManager() {
     }
 
-    Path path;
+    public Path path;
 
-    File file;
+    public File file;
 
     @Override
     public String createTask(Task task) {
