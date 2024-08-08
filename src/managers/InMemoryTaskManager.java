@@ -12,10 +12,22 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager;
     }
 
-    Map<String, Task> taskMap = new HashMap<>();
-    Map<String, SubTask> subTaskMap = new HashMap<>();
-    Map<String, Epic> epicMap = new HashMap<>();
-    Map<String, Task> mergedMap = new HashMap<>();
+    public Map<String, Task> getTaskMap() {
+        return taskMap;
+    }
+
+    public Map<String, SubTask> getSubTaskMap() {
+        return subTaskMap;
+    }
+
+    public Map<String, Epic> getEpicMap() {
+        return epicMap;
+    }
+
+    public Map<String, Task> taskMap = new HashMap<>();
+    public Map<String, SubTask> subTaskMap = new HashMap<>();
+    public Map<String, Epic> epicMap = new HashMap<>();
+    public Map<String, Task> mergedMap = new HashMap<>();
 
     public Map groupMapsForSave(Map taskMap, Map subTaskMap, Map epicMap) {
         mergedMap.putAll(taskMap);

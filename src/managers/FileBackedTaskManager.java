@@ -19,6 +19,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public FileBackedTaskManager() {
     }
+    FileBackedTaskManager fileBackedTaskManager;
 
     public Path path;
 
@@ -137,7 +138,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         this.path = file.toPath();
         this.file = file;
         List<String> linesForLoad;
-        FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(path);
+        fileBackedTaskManager = new FileBackedTaskManager(path);
         String[] split;
         if (fileExists(file)) {
             try {
@@ -154,18 +155,18 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         Task task = new Task(name, description, taskType);
                         task.setUuid(uuid);
                         task.setTaskStatus(taskStatus);
-                        taskMap.put(task.getUuid(),task);
+                        getTaskMap().put(task.getUuid(),task);
                     } else if (taskType.equals(TaskType.SubTask)) {
                         String epic = split[5];
                         SubTask subTask = new SubTask(name, description, taskType, epic);
                         subTask.setUuid(uuid);
                         subTask.setTaskStatus(taskStatus);
-                        subTaskMap.put(subTask.getUuid(),subTask);
+                        getSubTaskMap().put(subTask.getUuid(),subTask);
                     } else if (taskType.equals(TaskType.Epic)) {
                         Epic epic = new Epic(name, description, taskType);
                         epic.setUuid(uuid);
                         epic.setTaskStatus(taskStatus);
-                        taskMap.put(epic.getUuid(),epic);
+                        getEpicMap().put(epic.getUuid(),epic);
                     } else {
                         System.out.println("Такой тип задачи не поддерживается");
                         break;
@@ -177,7 +178,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         } else {
             System.out.println("Фаил не существует");
         }
-        return fileBackedTaskManager;
+        return this;
     }
 
     private static boolean fileExists(File file) {

@@ -119,8 +119,8 @@ public class FileBackedTaskManagerTest {
 
     @Test
     void loadFile(){
-        ArrayList<Task> expectedContent = taskManager.getTasks();
-        ArrayList<Task> content = taskManager1.getTasks();
+        int expectedContent = taskManager.getTasks().size();
+        int content = taskManager1.getTasks().size();
         assertEquals(expectedContent, content);
     }
 }

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class reSaveFileTest {
 
-    static File testFile = new File("/Users/dmitriiturin/java-kanban/testfiles/test.txt");
+    static File testFile = new File("testfiles/test.txt");
     static TaskManager taskManager = Managers.getFileBackedManager(Path.of(testFile.getAbsolutePath()));
 
     @AfterAll
