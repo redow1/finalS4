@@ -12,7 +12,6 @@ import tasks.formatters.CSVFormatter;
 
 import java.io.*;
 import java.nio.file.Path;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -118,7 +117,7 @@ public class FileBackedTaskManagerTest {
     }
 
     @Test
-    void loadFile(){
+    void loadFile() {
         int expectedContent = taskManager.getTasks().size();
         int content = taskManager1.getTasks().size();
         assertEquals(expectedContent, content);
