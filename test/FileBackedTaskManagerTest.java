@@ -18,9 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FileBackedTaskManagerTest {
 
-    static File testFile = new File("/Users/dmitriiturin/java-kanban/testfiles/test.txt");
+    static File testFile = new File("/java-kanban/testfiles/test.txt");
     static TaskManager taskManager = Managers.getFileBackedManager(Path.of(testFile.getAbsolutePath()));
-    static File testFile1 = new File("/Users/dmitriiturin/java-kanban/testfiles/test1.txt");
+    static File testFile1 = new File("/java-kanban/testfiles/test1.txt");
     static TaskManager taskManager1 = Managers.getFileBackedManager(Path.of(testFile1.getAbsolutePath()));
 
     @AfterAll
