@@ -6,6 +6,10 @@ import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
+    public InMemoryHistoryManager() {
+
+    }
+
     Node tail = null;
     Node head = null;
 

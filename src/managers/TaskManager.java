@@ -6,6 +6,7 @@ import tasks.Task;
 import tasks.TaskStatus;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.UUID;
 
 public interface TaskManager {
@@ -15,6 +16,8 @@ public interface TaskManager {
     default String uuidgen() {
         return UUID.randomUUID().toString();
     }
+
+    Map groupMapsForSave(Map taskMap, Map subTaskMap, Map epicMap);
 
     String createTask(Task task);
 
@@ -36,11 +39,11 @@ public interface TaskManager {
 
     Epic getEpic(String uuid);
 
-    void updateTaskParameters(Task task);
+    void updateTaskParameters(String uuid, String newName, String newDescription);
 
-    void updateSubTaskParameters(SubTask subTask);
+    void updateSubTaskParameters(String uuid, String newName, String newDescription, String newEpicUuid);
 
-    void updateEpicParameters(Epic epic);
+    void updateEpicParameters(String uuid, String newName, String newDescription);
 
     void deleteTasks();
 
@@ -65,5 +68,4 @@ public interface TaskManager {
     void updateSubTaskStatus(String uuid, TaskStatus newStatus);
 
     void updateEpicStatus(String uuid);
-
 }

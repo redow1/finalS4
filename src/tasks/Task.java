@@ -58,6 +58,10 @@ public  class Task {
         return taskStatus;
     }
 
+    public String getEpicUuidUuid() {
+        return null;
+    }
+
     public void setTaskStatus(TaskStatus taskStatus) {
         this.taskStatus = taskStatus;
     }

@@ -18,7 +18,7 @@ class SubTaskTest {
         final String epicUuid = taskManager.createEpic(epic);
         SubTask subTask = new SubTask("сходить в магазин1", "купить попить", TaskType.SubTask, epicUuid);
         final String subTask1Uuid = taskManager.createSubTask(subTask);
-        taskManager.updateSubTaskParameters(new SubTask("заказать проудктов", "к родителям", subTask1Uuid, subTask1Uuid));
+        taskManager.updateSubTaskParameters(subTask1Uuid,"заказать проудктов", "к родителям",subTask1Uuid);
         assertEquals(subTask.getEpicUuidUuid(), epicUuid, "Эпикайди был обновлен");
     }
 
