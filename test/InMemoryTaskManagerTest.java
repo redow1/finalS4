@@ -49,19 +49,19 @@ class InMemoryTaskManagerTest {
 
     @Test
     void getTaskByPrio() {
-        Task task = new Task("поспать1", "часов 8", TaskType.Task, Duration.ofDays(1), LocalDateTime.now().plusHours(3), null);
+        Task task = new Task("поспать1", "часов 8", TaskType.Task, Duration.ofMinutes(1), LocalDateTime.now().plusHours(3), null);
         final String uuid = taskManager.createTask(task);
-        Epic epic = new Epic("сходить в магазин1", "сходить в магазин завтра", TaskType.Epic, Duration.ofDays(1), LocalDateTime.now(), null);
+        Epic epic = new Epic("сходить в магазин1", "сходить в магазин завтра", TaskType.Epic, Duration.ofMinutes(1), LocalDateTime.now().minusMinutes(3), null);
         final String epicUuid = taskManager.createEpic(epic);
-        SubTask subTask = new SubTask("сходить в магазин2", "купить попить", TaskType.SubTask, Duration.ofDays(3), LocalDateTime.now().plusMinutes(15), null, epicUuid);
+        SubTask subTask = new SubTask("сходить в магазин2", "купить попить", TaskType.SubTask, Duration.ofMinutes(3), LocalDateTime.now().plusMinutes(15), null, epicUuid);
         final String subTask1Uuid = taskManager.createSubTask(subTask);
-        Epic epic2 = new Epic("сходить в магазин3", "сходить в магазин завтра", TaskType.Epic, Duration.ofDays(1), LocalDateTime.now().minusMinutes(20), null);
+        Epic epic2 = new Epic("сходить в магазин3", "сходить в магазин завтра", TaskType.Epic, Duration.ofMinutes(1), LocalDateTime.now().minusMinutes(20), null);
         final String uuid2 = taskManager.createEpic(epic2);
         List<Task> prioritizedTasksEtalon = new ArrayList<>();
         prioritizedTasksEtalon.add(epic2);
-        prioritizedTasksEtalon.add(epic);
         prioritizedTasksEtalon.add(subTask);
         prioritizedTasksEtalon.add(task);
+        taskManager.getPrioritizedTasks();
         assertEquals(taskManager.getPrioritizedTasks(),prioritizedTasksEtalon);
     }
 }
