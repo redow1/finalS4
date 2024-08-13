@@ -7,6 +7,8 @@ import tasks.formatters.CSVFormatter;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -48,20 +50,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateTaskParameters(String uuid, String newName, String newDescription) {
-        super.updateTaskParameters(uuid, newName, newDescription);
+    public void updateTaskParameters(String uuid, String newName, String newDescription, Duration newDuration, LocalDateTime newStartTime, LocalDateTime newEndTime) {
+        super.updateTaskParameters(uuid, newName, newDescription, newDuration, newStartTime, newEndTime);
         reSaveFile();
     }
 
     @Override
-    public void updateSubTaskParameters(String uuid, String newName, String newDescription, String newEpicUuid) {
-        super.updateSubTaskParameters(uuid, newName, newDescription, newEpicUuid);
+    public void updateSubTaskParameters(String uuid, String newName, String newDescription, Duration newDuration, LocalDateTime newStartTime, LocalDateTime newEndTime, String newEpicUuid) {
+        super.updateSubTaskParameters(uuid, newName, newDescription, newDuration, newStartTime, newEndTime, newEpicUuid);
         reSaveFile();
     }
 
     @Override
-    public void updateEpicParameters(String uuid, String newName, String newDescription) {
-        super.updateEpicParameters(uuid, newName, newDescription);
+    public void updateEpicParameters(String uuid, String newName, String newDescription, Duration newDuration, LocalDateTime newStartTime, LocalDateTime newEndTime) {
+        super.updateEpicParameters(uuid, newName, newDescription, newDuration, newStartTime, newEndTime);
         reSaveFile();
     }
 
@@ -151,20 +153,23 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     String name = split[2];
                     TaskStatus taskStatus = TaskStatus.valueOf(split[3]);
                     String description = split[4];
+                    Duration duration = Duration.parse(split[5]);
+                    LocalDateTime startTime = LocalDateTime.parse(split[6]);
+                    LocalDateTime endTime = LocalDateTime.parse(split[7]);
 
                     if (taskType.equals(TaskType.Task)) {
-                        Task task = new Task(name, description, taskType);
+                        Task task = new Task(name, description, taskType, duration, startTime, endTime);
                         task.setUuid(uuid);
                         task.setTaskStatus(taskStatus);
                         getTaskMap().put(task.getUuid(),task);
                     } else if (taskType.equals(TaskType.SubTask)) {
-                        String epic = split[5];
-                        SubTask subTask = new SubTask(name, description, taskType, epic);
+                        String epic = split[8];
+                        SubTask subTask = new SubTask(name, description, taskType, duration, startTime, endTime, epic);
                         subTask.setUuid(uuid);
                         subTask.setTaskStatus(taskStatus);
                         getSubTaskMap().put(subTask.getUuid(),subTask);
                     } else if (taskType.equals(TaskType.Epic)) {
-                        Epic epic = new Epic(name, description, taskType);
+                        Epic epic = new Epic(name, description, taskType, duration, startTime, endTime);
                         epic.setUuid(uuid);
                         epic.setTaskStatus(taskStatus);
                         getEpicMap().put(epic.getUuid(),epic);

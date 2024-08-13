@@ -12,6 +12,8 @@ import tasks.formatters.CSVFormatter;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -32,7 +34,7 @@ public class FileBackedTaskManagerTest {
 
     @Test
     void checkTitleLine() {
-        Task task = new Task("не спать", "вообще", TaskType.Task);
+        Task task = new Task("не спать", "вообще", TaskType.Task, Duration.ofDays(1), LocalDateTime.now(), null);
         String uuid1 = taskManager.createTask(task);
         String stringToAppend = CSVFormatter.getHeaders();
         try (BufferedReader br = new BufferedReader(new FileReader(testFile))) {
@@ -53,7 +55,7 @@ public class FileBackedTaskManagerTest {
 
     @Test
     void saveNewTaskToEmptyFile() {
-        Task task = new Task("поспать1", "часов 8", TaskType.Task);
+        Task task = new Task("поспать1", "часов 8", TaskType.Task, Duration.ofMinutes(10), LocalDateTime.now(), null);
         final String uuid2 = taskManager.createTask(task);
         String stringToAppend = CSVFormatter.toString(task);
         try (BufferedReader br = new BufferedReader(new FileReader(testFile))) {
@@ -74,9 +76,9 @@ public class FileBackedTaskManagerTest {
 
     @Test
     void saveNewSubTask() {
-        Epic epic = new Epic("сходить в магазин2", "сходить в магазин прям сейчас", TaskType.Epic);
+        Epic epic = new Epic("сходить в магазин4", "сходить в магазин прям сейчас", TaskType.Epic, Duration.ofDays(1), LocalDateTime.now(), null);
         final String epicUuid1 = taskManager.createEpic(epic);
-        SubTask subTask = new SubTask("сходить в магазин2", "купить арбуз", TaskType.SubTask, epicUuid1);
+        SubTask subTask = new SubTask("сходить в магазин2", "купить арбуз", TaskType.SubTask, Duration.ofDays(3), LocalDateTime.now(), null, epicUuid1);
         final String subTask1Uuid1 = taskManager.createSubTask(subTask);
         String stringToAppend = CSVFormatter.toString(subTask);
         try (BufferedReader br = new BufferedReader(new FileReader(testFile))) {
@@ -97,7 +99,7 @@ public class FileBackedTaskManagerTest {
 
     @Test
     void saveNewEpic() {
-        Epic epic = new Epic("сходить в магазин1", "сходить в магазин завтра", TaskType.Epic);
+        Epic epic = new Epic("сходить в магазин1", "сходить в магазин завтра", TaskType.Epic, Duration.ofDays(1), LocalDateTime.now(), null);
         final String uuid3 = taskManager.createEpic(epic);
         String stringToAppend = CSVFormatter.toString(epic);
         try (BufferedReader br = new BufferedReader(new FileReader(testFile))) {
@@ -122,4 +124,5 @@ public class FileBackedTaskManagerTest {
         int content = taskManager1.getTasks().size();
         assertEquals(expectedContent, content);
     }
+
 }

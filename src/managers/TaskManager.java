@@ -5,7 +5,10 @@ import tasks.SubTask;
 import tasks.Task;
 import tasks.TaskStatus;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -39,11 +42,13 @@ public interface TaskManager {
 
     Epic getEpic(String uuid);
 
-    void updateTaskParameters(String uuid, String newName, String newDescription);
+    void updateTaskParameters(String uuid, String newName, String newDescription, Duration newDuration, LocalDateTime newStartTime, LocalDateTime newEndTime);
 
-    void updateSubTaskParameters(String uuid, String newName, String newDescription, String newEpicUuid);
+    void updateSubTaskParameters(String uuid, String newName, String newDescription, Duration newDuration, LocalDateTime newStartTime, LocalDateTime newEndTime, String newEpicUuid);
 
-    void updateEpicParameters(String uuid, String newName, String newDescription);
+    void updateEpicParameters(String uuid, String newName, String newDescription, Duration newDuration, LocalDateTime newStartDate, LocalDateTime newEndDate);
+
+    void updateEpicTimePrametrs(String uuid, String newName, String newDescription, Duration newDuration, LocalDateTime newStartTime, LocalDateTime newEndTime);
 
     void deleteTasks();
 
@@ -68,4 +73,10 @@ public interface TaskManager {
     void updateSubTaskStatus(String uuid, TaskStatus newStatus);
 
     void updateEpicStatus(String uuid);
+
+    void setEpicEndTime(String epicUuid);
+
+    List<Task> getPrioritizedTasks();
+
+    boolean isTimeForTasksOverlap(Task task1, Task task2);
 }

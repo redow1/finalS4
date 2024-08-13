@@ -16,7 +16,10 @@ public class CSVFormatter {
                     .append(task.getName()).append(",")
                     .append(task.getTaskStatus()).append(",")
                     .append(task.getDescription()).append(",")
-                    .append(task.getEpicUuidUuid());
+                    .append(task.getDuration()).append(",")
+                    .append(task.getStartTime()).append(",")
+                    .append(task.getEndTime()).append(",")
+                    .append(task.getEpicUuid());
                     return append1.toString();
         } else {
             StringBuilder append2 = new StringBuilder()
@@ -24,7 +27,10 @@ public class CSVFormatter {
                     .append(task.getTaskType()).append(",")
                     .append(task.getName()).append(",")
                     .append(task.getTaskStatus()).append(",")
-                    .append(task.getDescription());
+                    .append(task.getDescription()).append(",")
+                    .append(task.getDuration()).append(",")
+                    .append(task.getStartTime()).append(",")
+                    .append(task.getEndTime()).append(",");
             return append2.toString();
 
         }
@@ -37,6 +43,6 @@ public class CSVFormatter {
     }
 
     public static String getHeaders() {
-        return "id,type,name,status,description,epic";
+        return "id,type,name,status,description, duration, startTime, endTime, epic";
     }
 }
