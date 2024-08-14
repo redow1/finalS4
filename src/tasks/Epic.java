@@ -6,8 +6,7 @@ import java.util.ArrayList;
 
 public class Epic extends Task {
 
-    ArrayList<SubTask> subTasks = new ArrayList<SubTask>();
-    LocalDateTime epicEndTime;
+    protected ArrayList<SubTask> subTasks = new ArrayList<SubTask>();
 
     public Epic(String name, String description, TaskType taskType, Duration duration, LocalDateTime startTime, LocalDateTime endTime) {
         super(name,

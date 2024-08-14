@@ -4,14 +4,14 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public  class Task {
-    String name;
-    String description;
-    TaskType taskType;
-    String uuid;
-    TaskStatus taskStatus;
-    Duration duration;
-    LocalDateTime startTime;
-    LocalDateTime endTime;
+    protected String name;
+    protected String description;
+    protected TaskType taskType;
+    protected String uuid;
+    protected TaskStatus taskStatus;
+    protected Duration duration;
+    protected LocalDateTime startTime;
+    protected LocalDateTime endTime;
 
     public Task(String name, String description, TaskType taskType, Duration duration, LocalDateTime startTime, LocalDateTime endTime) {
         this.name = name;

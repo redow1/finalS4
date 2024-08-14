@@ -10,10 +10,10 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     }
 
-    Node tail = null;
-    Node head = null;
+    private Node tail = null;
+    private Node head = null;
 
-    public HashMap<Task, Node> nodeMap = new HashMap<>();
+    private HashMap<Task, Node> nodeMap = new HashMap<>();
 
     @Override
     public void add(Task task) {

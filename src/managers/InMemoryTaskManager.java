@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class InMemoryTaskManager implements TaskManager {
-    HistoryManager historyManager = Managers.getDefaultHistory();
+    private HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
     public HistoryManager getHistoryManager() {
@@ -27,13 +27,14 @@ public class InMemoryTaskManager implements TaskManager {
         return epicMap;
     }
 
-    public Map<String, Task> taskMap = new HashMap<>();
-    public Map<String, SubTask> subTaskMap = new HashMap<>();
-    public Map<String, Epic> epicMap = new HashMap<>();
-    public Map<String, Task> mergedMap = new HashMap<>();
-    TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime, Comparator.nullsLast(Comparator.naturalOrder())));
+    protected Map<String, Task> taskMap = new HashMap<>();
+    protected Map<String, SubTask> subTaskMap = new HashMap<>();
+    protected Map<String, Epic> epicMap = new HashMap<>();
+
+    private TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime, Comparator.nullsLast(Comparator.naturalOrder())));
 
     public Map groupMapsForSave(Map taskMap, Map subTaskMap, Map epicMap) {
+        Map<String, Task> mergedMap = new HashMap<>();
         mergedMap.putAll(taskMap);
         mergedMap.putAll(subTaskMap);
         mergedMap.putAll(epicMap);
@@ -289,9 +290,6 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteEpics() {
         epicMap.values().stream()
                 .forEach(epic -> {
-                    if (epic.getStartTime() != null) {
-                        prioritizedTasks.remove(epic);
-                    }
                     historyManager.remove(epic);
                 });
 
@@ -326,9 +324,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteEpic(String uuid) {
-        if (epicMap.get(uuid).getStartTime() != null) {
-            prioritizedTasks.remove(epicMap.get(uuid));
-        }
         historyManager.remove(epicMap.get(uuid));
         Iterator<String> it = subTaskMap.keySet().iterator();
         while (it.hasNext()) {
