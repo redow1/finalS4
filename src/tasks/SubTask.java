@@ -1,15 +1,18 @@
 package tasks;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class SubTask extends Task {
-    String epicUuid;
+    protected String epicUuid;
 
-    public SubTask(String name, String description, TaskType taskType, String epicUuid) {
-        super(name, description, taskType);
-        this.epicUuid = epicUuid;
-    }
-
-    public SubTask(String name, String description, String uuid, String epicUuid) {
-        super(name, description, uuid);
+    public SubTask(String name, String description, TaskType taskType, Duration duration, LocalDateTime startTime, LocalDateTime endTime, String epicUuid) {
+        super(name,
+                description,
+                taskType,
+                duration,
+                startTime,
+                endTime);
         this.epicUuid = epicUuid;
     }
 
@@ -17,7 +20,7 @@ public class SubTask extends Task {
     }
 
     @Override
-    public String getEpicUuidUuid() {
+    public String getEpicUuid() {
         return epicUuid;
     }
 

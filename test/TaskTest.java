@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import tasks.Task;
 import tasks.TaskType;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,7 +17,7 @@ class TaskTest {
 
     @Test
     void createNewTask() {
-        Task task = new Task("поспать1", "часов 8", TaskType.Task);
+        Task task = new Task("поспать1", "часов 8", TaskType.Task, Duration.ofDays(1), LocalDateTime.now(), null);
         final String uuid = taskManager.createTask(task);
         final Task savedTask = taskManager.getTask(uuid);
         assertNotNull(savedTask, "Задача не найдена.");

@@ -1,14 +1,18 @@
-package tasks;
+package test;
 
 import exeptions.ManagerSaveException;
 import managers.Managers;
 import managers.TaskManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import tasks.Task;
+import tasks.TaskType;
 import tasks.formatters.CSVFormatter;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -27,9 +31,9 @@ public class reSaveFileTest {
 
     @Test
     void reSaveFile() {
-        Task task = new Task("не спать почти", "вообще", TaskType.Task);
+        Task task = new Task("не спать почти", "вообще", TaskType.Task, Duration.ofDays(1), LocalDateTime.now(), null);
         String uuid5 = taskManager.createTask(task);
-        taskManager.updateTaskParameters(uuid5, null, "for test1");
+        taskManager.updateTaskParameters(uuid5, null, "for test1",null,null,null);
         Task task1 = taskManager.getTask(uuid5);
         String stringToAppend = CSVFormatter.toString(task1);
         try (BufferedReader br = new BufferedReader(new FileReader(testFile))) {

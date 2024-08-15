@@ -1,22 +1,25 @@
 package tasks;
 
-public  class Task {
-    String name;
-    String description;
-    TaskType taskType;
-    String uuid;
-    TaskStatus taskStatus;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
-    public Task(String name, String description, TaskType taskType) {
+public  class Task {
+    protected String name;
+    protected String description;
+    protected TaskType taskType;
+    protected String uuid;
+    protected TaskStatus taskStatus;
+    protected Duration duration;
+    protected LocalDateTime startTime;
+    protected LocalDateTime endTime;
+
+    public Task(String name, String description, TaskType taskType, Duration duration, LocalDateTime startTime, LocalDateTime endTime) {
         this.name = name;
         this.description = description;
         this.taskType = taskType;
-    }
-
-    public Task(String name, String description, String uuid) {
-        this.name = name;
-        this.description = description;
-        this.uuid = uuid;
+        this.duration = duration;
+        this.startTime = startTime;
+        this.endTime = startTime.plus(duration);
     }
 
     public Task() {
@@ -58,12 +61,36 @@ public  class Task {
         return taskStatus;
     }
 
-    public String getEpicUuidUuid() {
+    public String getEpicUuid() {
         return null;
     }
 
     public void setTaskStatus(TaskStatus taskStatus) {
         this.taskStatus = taskStatus;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 
     @Override
