@@ -31,14 +31,10 @@ class SubTaskHttpTest {
 
     Gson gson = HttpTaskServer.getGson();
 
-    @BeforeAll
-    static void setUp() throws IOException {
-        taskManager = Managers.getDefault();
-        httpTaskServer = new HttpTaskServer(taskManager);
-    }
-
     @BeforeEach
     void startServer() throws IOException, InterruptedException {
+        taskManager = Managers.getDefault();
+        httpTaskServer = new HttpTaskServer(taskManager);
         httpTaskServer.start();
 
         Epic task = new Epic("task3", "часов 8", TaskType.Task, Duration.ofSeconds(1), LocalDateTime.now(), null);
