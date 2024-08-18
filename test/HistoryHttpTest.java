@@ -30,25 +30,17 @@ class HistoryHttpTest {
     @BeforeAll
     static void setUp() throws IOException {
         taskManager = Managers.getDefault();
-        if (httpTaskServer != null) {
-            httpTaskServer.stop();
-        }
         httpTaskServer = new HttpTaskServer(taskManager);
     }
 
     @BeforeEach
     void startServer() throws IOException {
-        if (httpTaskServer != null) {
-            httpTaskServer.stop();
-        }
         httpTaskServer.start();
     }
 
     @AfterEach
     void stopServer() throws IOException {
-        if (httpTaskServer != null) {
-            httpTaskServer.stop();
-        }
+        httpTaskServer.stop();
     }
 
     @Test
