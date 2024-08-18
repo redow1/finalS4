@@ -22,7 +22,7 @@ public class HttpTaskServer {
 
     public HttpTaskServer(TaskManager taskManager) throws IOException {
         this.taskManager = taskManager;
-        this.httpServer = HttpServer.create(new InetSocketAddress("localhost" ,PORT), 0);
+        this.httpServer = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
         this.httpServer.createContext("/tasks", new TasksHttpHandler(taskManager));
         this.httpServer.createContext("/subtasks", new SubTasksHttpHandler(taskManager));
         this.httpServer.createContext("/epics", new EpicsHttpHandler(taskManager));
