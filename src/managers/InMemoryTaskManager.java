@@ -1,5 +1,6 @@
 package managers;
 
+import exeptions.TaskOverlapException;
 import tasks.*;
 
 import java.time.Duration;
@@ -46,7 +47,7 @@ public class InMemoryTaskManager implements TaskManager {
         boolean hasOverlap = prioritizedTasks.stream()
                 .anyMatch(existingTask -> isTimeForTasksOverlap(task, existingTask));
         if (hasOverlap) {
-            throw new IllegalArgumentException("Задача пересекается с другой задачей по времени выполнения");
+            throw new TaskOverlapException("Задача пересекается с другой задачей по времени выполнения",406);
         }
         task.setUuid(uuidgen());
         task.setTaskStatus(TaskStatus.NEW);
@@ -63,7 +64,7 @@ public class InMemoryTaskManager implements TaskManager {
                 .anyMatch(existingTask -> isTimeForTasksOverlap(subTask, existingTask));
 
         if (hasOverlap) {
-            throw new IllegalArgumentException("Подзадача пересекается с другой задачей или подзадачей по времени выполнения");
+            throw new TaskOverlapException("Задача пересекается с другой задачей по времени выполнения",406);
         }
         subTask.setUuid(uuidgen());
         subTask.setTaskStatus(TaskStatus.NEW);
@@ -81,7 +82,7 @@ public class InMemoryTaskManager implements TaskManager {
         boolean hasOverlap = prioritizedTasks.stream()
                 .anyMatch(existingTask -> isTimeForTasksOverlap(epic, existingTask));
         if (hasOverlap) {
-            throw new IllegalArgumentException("Задача пересекается с другой задачей по времени выполнения");
+            throw new TaskOverlapException("Задача пересекается с другой задачей по времени выполнения",406);
         }
         epic.setUuid(uuidgen());
         epic.setTaskStatus(TaskStatus.NEW);
