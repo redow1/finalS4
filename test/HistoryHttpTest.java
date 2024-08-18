@@ -27,14 +27,10 @@ class HistoryHttpTest {
 
     Gson gson = HttpTaskServer.getGson();
 
-    @BeforeAll
+    @BeforeEach
     static void setUp() throws IOException {
         taskManager = Managers.getDefault();
         httpTaskServer = new HttpTaskServer(taskManager);
-    }
-
-    @BeforeEach
-    void startServer() throws IOException {
         httpTaskServer.start();
     }
 
