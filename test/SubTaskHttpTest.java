@@ -5,7 +5,6 @@ import http.HttpTaskServer;
 import managers.Managers;
 import managers.TaskManager;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tasks.Epic;
@@ -59,7 +58,7 @@ class SubTaskHttpTest {
 
     @Test
     void getEpics() throws IOException, InterruptedException {
-        SubTask task = new SubTask("task1", "часов 8", TaskType.Task, Duration.ofSeconds(1), LocalDateTime.now(), null, epicUuid);
+        SubTask task = new SubTask("task1", "часов 8", TaskType.Task, Duration.ofSeconds(1), LocalDateTime.now().minusMinutes(25), null, epicUuid);
         String taskJson = gson.toJson(task);
 
         HttpClient client = HttpClient.newHttpClient();
@@ -88,7 +87,7 @@ class SubTaskHttpTest {
 
     @Test
     void getTask() throws IOException, InterruptedException {
-        SubTask task = new SubTask("task3", "часов 8", TaskType.Task, Duration.ofSeconds(1), LocalDateTime.now(), null, epicUuid);
+        SubTask task = new SubTask("task3", "часов 8", TaskType.Task, Duration.ofSeconds(1), LocalDateTime.now().minusMinutes(10), null, epicUuid);
         String taskJson = gson.toJson(task);
 
         HttpClient client = HttpClient.newHttpClient();
@@ -135,7 +134,7 @@ class SubTaskHttpTest {
 
     @Test
     void createTask() throws IOException, InterruptedException {
-        SubTask task = new SubTask("task1", "часов 8", TaskType.Task, Duration.ofSeconds(1), LocalDateTime.now(), null, epicUuid);
+        SubTask task = new SubTask("task1", "часов 8", TaskType.Task, Duration.ofSeconds(1), LocalDateTime.now().minusMinutes(15), null, epicUuid);
         String taskJson = gson.toJson(task);
 
         HttpClient client = HttpClient.newHttpClient();
@@ -183,7 +182,7 @@ class SubTaskHttpTest {
 
     @Test
     void updateTask() throws IOException, InterruptedException {
-        SubTask task = new SubTask("task2", "часов 8", TaskType.Task, Duration.ofSeconds(1), LocalDateTime.now(), null, epicUuid);
+        SubTask task = new SubTask("task2", "часов 8", TaskType.Task, Duration.ofSeconds(1), LocalDateTime.now().minusMinutes(5), null, epicUuid);
         String taskJson = gson.toJson(task);
 
         HttpClient client = HttpClient.newHttpClient();
@@ -211,7 +210,7 @@ class SubTaskHttpTest {
 
     @Test
     void deleteTask() throws IOException, InterruptedException {
-        SubTask task = new SubTask("task3", "часов 8", TaskType.Task, Duration.ofSeconds(1), LocalDateTime.now(), null, epicUuid);
+        SubTask task = new SubTask("task3", "часов 8", TaskType.Task, Duration.ofSeconds(1), LocalDateTime.now().minusMinutes(20), null, epicUuid);
         String taskJson = gson.toJson(task);
 
         HttpClient client = HttpClient.newHttpClient();
