@@ -26,8 +26,9 @@ public class HistoryHttpHandler extends BaseHttpHandler {
                 String response = HttpTaskServer.getGson().toJson(historyManager.getHistory());
                 sendText(exchange, response);
             default:
-                String response1 = "Internal Server Error";
-                internalServerError(exchange, response1);
+                System.out.println("/task получил: " + exchange.getRequestMethod());
+                exchange.sendResponseHeaders(405, 0);
+                exchange.close();
         }
     }
 }

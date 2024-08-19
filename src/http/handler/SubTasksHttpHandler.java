@@ -6,6 +6,7 @@ import exeptions.TaskOverlapException;
 import http.HttpTaskServer;
 import managers.TaskManager;
 import tasks.SubTask;
+import tasks.Task;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,8 +36,7 @@ public class SubTasksHttpHandler extends BaseHttpHandler {
                 } else {
                     SubTask subTask  = taskManager.getSubTask(uuid);
                     if (subTask == null) {
-                        String response = "Not Found";
-                        sendNotFound(exchange,response);
+                        sendNotFound(exchange,"Not Found");
                     } else {
                         String response = HttpTaskServer.getGson().toJson(subTask);
                         sendText(exchange, response);
@@ -45,35 +45,27 @@ public class SubTasksHttpHandler extends BaseHttpHandler {
                 break;
             case "POST":
                 try {
-                    SubTask task1 = null;
-                    try (InputStream inputStream = exchange.getRequestBody();
-                         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-                        String input = reader.lines().collect(Collectors.joining("\n"));
-                        task1 = HttpTaskServer.getGson().fromJson(input, SubTask.class);
+                    SubTask subTaskForRead = null;
+                    subTaskForRead = HttpTaskServer.getGson().fromJson(readText(exchange), SubTask.class);
 
-                    }
-
-                    if (task1 == null) {
-                        String response = "Bad request";
-                        badRequest(exchange, response);
+                    if (subTaskForRead == null) {
+                        badRequest(exchange, "Bad request");
                         return;
                     }
-                    SubTask subTask = new SubTask(task1.getName(),task1.getDescription(),task1.getTaskType(),task1.getDuration(),task1.getStartTime(),task1.getEndTime(),task1.getEpicUuid());
-                    if (task1.getUuid() == null) {
+                    SubTask subTask = new SubTask(subTaskForRead.getName(),subTaskForRead.getDescription(),subTaskForRead.getTaskType(),subTaskForRead.getDuration(),subTaskForRead.getStartTime(),subTaskForRead.getEndTime(),subTaskForRead.getEpicUuid());
+                    if (subTaskForRead.getUuid() == null) {
                         String taskUuid = taskManager.createSubTask(subTask);
                         System.out.println("Created new task: " + taskUuid);
-                        sendHasInteractions(exchange);
+                        positiveWithoutText(exchange);
                     } else {
-                        taskManager.updateSubTaskParameters(task1.getUuid(), subTask.getName(), subTask.getDescription(), subTask.getDuration(), subTask.getStartTime(), subTask.getEndTime(), subTask.getEpicUuid());
+                        taskManager.updateSubTaskParameters(subTaskForRead.getUuid(), subTask.getName(), subTask.getDescription(), subTask.getDuration(), subTask.getStartTime(), subTask.getEndTime(), subTask.getEpicUuid());
                         System.out.println("Updated subTask: " + subTask.getUuid());
-                        sendHasInteractions(exchange);
+                        positiveWithoutText(exchange);
                     }
                 } catch (TaskOverlapException e) {
-                    String response = "Task overlap: " + e.getMessage();
-                    notAcceptable(exchange, response);
+                    sendHasInteractions(exchange, "Task overlap: " + e.getMessage());
                 } catch (Exception e) {
-                    String response = "Internal Server Error";
-                    internalServerError(exchange, response);
+                    internalServerError(exchange, "Internal Server Error");
                 }
 
                 break;
@@ -85,8 +77,7 @@ public class SubTasksHttpHandler extends BaseHttpHandler {
                 } else {
                     SubTask subTask  = taskManager.getSubTask(uuid);
                     if (subTask == null) {
-                        String response = "Not Found";
-                        sendNotFound(exchange,response);
+                        sendNotFound(exchange,"Not Found");
                     } else {
                         String response = HttpTaskServer.getGson().toJson(subTask);
                         taskManager.deleteSubTask(subTask.getUuid());
@@ -95,8 +86,9 @@ public class SubTasksHttpHandler extends BaseHttpHandler {
                 }
                 break;
             default:
-                String response = "Internal Server Error";
-                internalServerError(exchange, response);
+                System.out.println("/task получил: " + exchange.getRequestMethod());
+                exchange.sendResponseHeaders(405, 0);
+                exchange.close();
         }
     }
 }

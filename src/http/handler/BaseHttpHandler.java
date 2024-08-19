@@ -16,7 +16,7 @@ public abstract class BaseHttpHandler implements HttpHandler {
         h.close();
     }
 
-    protected void sendHasInteractions(HttpExchange h) throws IOException {
+    protected void positiveWithoutText(HttpExchange h) throws IOException {
         h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
         h.sendResponseHeaders(201, 0);
         h.close();
@@ -39,7 +39,7 @@ public abstract class BaseHttpHandler implements HttpHandler {
         h.close();
     }
 
-    protected void notAcceptable(HttpExchange h, String text) throws IOException {
+    protected void sendHasInteractions(HttpExchange h, String text) throws IOException {
         byte[] resp = text.getBytes(StandardCharsets.UTF_8);
         h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
         h.sendResponseHeaders(406, resp.length);
@@ -66,6 +66,10 @@ public abstract class BaseHttpHandler implements HttpHandler {
     protected Integer getPathLength(String path) throws IOException {
         String[] paths = path.split("/");
         return paths.length;
+    }
+
+    protected String readText(HttpExchange h) throws IOException {
+        return new String(h.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
     }
 
 }
